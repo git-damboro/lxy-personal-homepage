@@ -1,0 +1,95 @@
+---
+import Arrow from "../components/Arrow.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { profile } from "../data/profile";
+
+const title = "关于 · Lxy";
+const description = "关于李兴宇：后端与 Agent 工程方向、工程方法、公开范围与联系信息。";
+const methods = [
+  {
+    number: "01",
+    title: "确定性执行优先",
+    text: "让规则、状态机和可验证工具承接副作用；把概率判断放在候选生成、歧义仲裁与解释层。",
+  },
+  {
+    number: "02",
+    title: "状态与产物分离",
+    text: "状态回答任务走到哪里，Artifact 保存过程证据和结果；两者用稳定标识关联，而不是相互覆盖。",
+  },
+  {
+    number: "03",
+    title: "证据驱动排障",
+    text: "先复现和缩小范围，再用日志、状态转换与代码路径排除假设，最后为根因补终态与防复发机制。",
+  },
+  {
+    number: "04",
+    title: "先跑通，再增强",
+    text: "先形成可验证的最小闭环，再补安全、稳定性和平台能力；每一阶段都明确当前边界。",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} page="about">
+  <section class="band about-hero-band" id="top" aria-labelledby="page-title">
+    <div class="shell about-hero">
+      <div>
+        <p class="eyebrow hero-reveal" style="--order: 0">ABOUT / LXY</p>
+        <h1 id="page-title" class="hero-reveal" style="--order: 1">我关注的不是让 Agent 看起来聪明，<br /><em>而是让它在真实系统里可靠工作。</em></h1>
+      </div>
+      <div class="about-intro hero-reveal" style="--order: 2">
+        <p>我是李兴宇，东华大学计算机专硕，2028 届。方向集中在后端开发、Agent Runtime、自动化和任务平台。</p>
+        <p>四段实习让我持续接触执行框架、服务调度、数据模型、前端可观测与产品交付。这个网站只展示可以公开且能够说明边界的内容。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band method-band" aria-labelledby="method-title" data-reveal>
+    <div class="shell method-grid">
+      <header class="band-heading">
+        <p class="eyebrow">01 / WORKING METHOD</p>
+        <h2 id="method-title">我的工程方法<span>。</span></h2>
+        <p>这些原则来自已经完成的项目与排障，不是单独陈列的口号。</p>
+      </header>
+      <div class="method-list">
+        {methods.map(method => (
+          <article>
+            <span>{method.number}</span>
+            <h3>{method.title}</h3>
+            <p>{method.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band scope-band" aria-labelledby="scope-title" data-reveal>
+    <div class="shell scope-grid">
+      <div>
+        <p class="eyebrow signal">02 / PUBLIC SCOPE</p>
+        <h2 id="scope-title">公开内容有边界，<br />判断过程不省略。</h2>
+      </div>
+      <div class="scope-copy">
+        <p>公司项目只保留职责、通用机制与脱敏后的工程问题，不公开源码、内部 URL、原始日志、配置和业务数据。</p>
+        <p>个人项目会标明模拟运行、二次开发与本人增量。没有完成真实闭环的工具不会提前进入 Lab 导航。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band contact-band" aria-labelledby="contact-title" data-reveal>
+    <div class="shell contact-grid">
+      <div>
+        <p class="eyebrow">03 / CONTACT</p>
+        <h2 id="contact-title">简历沟通，<br />从一封邮件开始<span>。</span></h2>
+        <button class="print-button" type="button" data-print-page hidden>打印本页</button>
+      </div>
+      <div class="contact-actions">
+        <a class="email-link" href={`mailto:${profile.email}`}>{profile.email}<Arrow diagonal /></a>
+        <div class="contact-secondary">
+          <a href={profile.github} target="_blank" rel="noreferrer">GitHub / git-damboro<Arrow diagonal /></a>
+          <button type="button" data-copy-email={profile.email} hidden>复制邮箱</button>
+        </div>
+        <span class="copy-status" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

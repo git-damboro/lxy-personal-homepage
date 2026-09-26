@@ -1,0 +1,46 @@
+---
+import { ClientRouter } from "astro:transitions";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import "../styles/site.css";
+
+interface Props {
+  title: string;
+  description: string;
+  page: "home" | "work" | "notes" | "about";
+}
+
+const { title, description, page } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8fafc" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" />
+    <script is:inline>document.documentElement.classList.add("js");</script>
+    <ClientRouter />
+    <title>{title}</title>
+  </head>
+  <body data-page={page}>
+    <a href="#main" class="skip-link">跳到正文</a>
+    <div class="reading-progress" aria-hidden="true"></div>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+    <script>
+      import "../scripts/site";
+    </script>
+  </body>
+</html>

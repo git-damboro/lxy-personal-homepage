@@ -1,0 +1,11 @@
+repos/
+references/
+node_modules/
+screenshots/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+dist/
+.astro/

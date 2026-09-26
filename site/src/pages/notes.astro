@@ -1,0 +1,65 @@
+---
+import Arrow from "../components/Arrow.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { engineeringNotes } from "../data/profile";
+
+const title = "工程复盘 · Lxy";
+const description = "围绕长任务终态、自动化执行回放和多副本调度的工程问题复盘，展示现象、根因、方案与边界。";
+---
+
+<BaseLayout title={title} description={description} page="notes">
+  <section class="band page-intro-band notes-intro-band" id="top" aria-labelledby="page-title">
+    <div class="shell page-intro">
+      <p class="eyebrow signal hero-reveal" style="--order: 0">NOTES / ENGINEERING FIELDWORK</p>
+      <h1 id="page-title" class="hero-reveal" style="--order: 1">从异常现象出发，<br /><em>把根因和边界讲清楚。</em></h1>
+      <div class="page-intro-aside hero-reveal" style="--order: 2">
+        <p>这些内容来自真实工程问题的脱敏复盘。保留机制、判断过程和方案取舍，不公开公司代码、内部地址、日志或配置。</p>
+        <a class="text-link light-link" href="/work">返回项目案例<Arrow /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band notes-page-band" aria-label="工程复盘列表">
+    <div class="shell notes-page-grid">
+      <aside class="notes-sidebar">
+        <p class="eyebrow">INDEX</p>
+        {engineeringNotes.map(note => (
+          <a href={`#${note.id}`} data-case-nav={note.id}><span>{note.number}</span>{note.title}<Arrow /></a>
+        ))}
+      </aside>
+
+      <div class="note-list">
+        {engineeringNotes.map(note => (
+          <article class="note-article" id={note.id} aria-labelledby={`${note.id}-title`} data-reveal>
+            <header>
+              <div class="note-meta"><span>{note.number}</span><span>{note.category}</span></div>
+              <h2 id={`${note.id}-title`}>{note.title}</h2>
+              <p>{note.summary}</p>
+            </header>
+            <dl class="note-points">
+              {note.points.map(point => (
+                <div>
+                  <dt>{point.label}</dt>
+                  <dd>{point.text}</dd>
+                </div>
+              ))}
+            </dl>
+            <div class="note-boundary">
+              <span>BOUNDARY</span>
+              <p>{note.boundary}</p>
+            </div>
+            <ul class="tags" aria-label="复盘关键词">{note.tags.map(tag => <li>{tag}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band next-band" data-reveal>
+    <div class="shell next-grid">
+      <p class="eyebrow">CONTEXT</p>
+      <h2>这些问题，最终都回到具体项目与职责。</h2>
+      <a class="text-link strong-link" href="/work">查看项目证据<Arrow /></a>
+    </div>
+  </section>
+</BaseLayout>

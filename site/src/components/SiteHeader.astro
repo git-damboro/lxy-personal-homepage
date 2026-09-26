@@ -1,0 +1,31 @@
+---
+import Arrow from "./Arrow.astro";
+import { profile } from "../data/profile";
+
+const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const navigation = [
+  { href: "/", label: "首页" },
+  { href: "/work", label: "项目" },
+  { href: "/notes", label: "复盘" },
+  { href: "/about", label: "关于" },
+];
+---
+
+<header class="header" data-site-header>
+  <div class="shell header-inner">
+    <a class="wordmark" href="/" aria-label="Lxy · 李兴宇，返回首页">
+      <span class="wordmark-symbol">lxy<span>.</span></span>
+      <span class="wordmark-name">李兴宇</span>
+    </a>
+    <nav aria-label="主导航">
+      {navigation.map(item => (
+        <a href={item.href} aria-current={pathname === item.href ? "page" : undefined}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <a class="github-link" href={profile.github} target="_blank" rel="noreferrer" aria-label="打开 Lxy 的 GitHub">
+      <span>GitHub</span><Arrow diagonal />
+    </a>
+  </div>
+</header>
