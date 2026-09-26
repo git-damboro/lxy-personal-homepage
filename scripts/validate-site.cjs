@@ -131,6 +131,102 @@ async function main() {
     report.push({ motion, reducedMotion: reduced, clientNavigation: "home -> work" });
     await motionPage.close();
 
+    const signalPage = await browser.newPage();
+    await signalPage.setViewport({ width: 1440, height: 900 });
+    await signalPage.goto(base, { waitUntil: "domcontentloaded" });
+    await signalPage.click('[data-home-mode="signal"]');
+    await signalPage.waitForFunction(() => {
+      const canvas = document.querySelector("[data-signal-canvas]");
+      const context = canvas?.getContext("2d");
+      if (!canvas || !context || document.documentElement.dataset.homeMode !== "signal") return false;
+      const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      for (let index = 3; index < pixels.length; index += 64) {
+        if (pixels[index] > 0) return true;
+      }
+      return false;
+    });
+    await signalPage.waitForFunction(() => !document.getAnimations().some(animation => animation.playState === "running" || animation.playState === "pending"));
+    await settle(signalPage);
+    const signalDesktop = await signalPage.evaluate(() => ({
+      mode: document.documentElement.dataset.homeMode,
+      archiveDisplay: getComputedStyle(document.querySelector(".archive-home")).display,
+      signalDisplay: getComputedStyle(document.querySelector(".signal-home")).display,
+      pressed: document.querySelector('button[data-home-mode="signal"]')?.getAttribute("aria-pressed"),
+      canvas: {
+        width: document.querySelector("[data-signal-canvas]")?.width,
+        height: document.querySelector("[data-signal-canvas]")?.height,
+      },
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    assert.equal(signalDesktop.mode, "signal");
+    assert.equal(signalDesktop.archiveDisplay, "none");
+    assert.notEqual(signalDesktop.signalDisplay, "none");
+    assert.equal(signalDesktop.pressed, "true");
+    assert(signalDesktop.canvas.width > 0 && signalDesktop.canvas.height > 0, "Signal canvas is blank");
+    assert(signalDesktop.scrollWidth <= 1440, "Signal desktop horizontal overflow");
+    await signalPage.screenshot({ path: path.join(output, "signal-1440.png"), fullPage: true });
+    await signalPage.screenshot({ path: path.join(output, "signal-1440-top.png") });
+
+    await signalPage.focus('[data-signal-node="2"]');
+    await signalPage.keyboard.press("Enter");
+    await signalPage.waitForFunction(() => document.querySelector("[data-signal-detail-title]")?.textContent === "Reliability");
+    assert.equal(await signalPage.$eval("[data-signal-state]", element => element.textContent), "ACTIVE / C3");
+
+    await signalPage.reload({ waitUntil: "domcontentloaded" });
+    await signalPage.waitForFunction(() => document.documentElement.dataset.homeMode === "signal");
+    assert.equal(await signalPage.$eval('button[data-home-mode="signal"]', button => button.getAttribute("aria-pressed")), "true");
+
+    await signalPage.setViewport({ width: 390, height: 844 });
+    await signalPage.reload({ waitUntil: "domcontentloaded" });
+    await signalPage.waitForFunction(() => document.documentElement.dataset.homeMode === "signal");
+    await signalPage.waitForFunction(() => !document.getAnimations().some(animation => animation.playState === "running" || animation.playState === "pending"));
+    await settle(signalPage);
+    const signalMobile = await signalPage.evaluate(() => ({
+      scrollWidth: document.documentElement.scrollWidth,
+      heroBottom: document.querySelector(".signal-hero")?.getBoundingClientRect().bottom,
+      canvasWidth: document.querySelector("[data-signal-canvas]")?.width,
+    }));
+    assert(signalMobile.scrollWidth <= 390, "Signal mobile horizontal overflow");
+    assert(signalMobile.heroBottom <= 844, "Signal mobile hero does not reveal the next section");
+    assert(signalMobile.canvasWidth > 0, "Signal mobile canvas is blank");
+    await signalPage.screenshot({ path: path.join(output, "signal-390.png"), fullPage: true });
+    await signalPage.screenshot({ path: path.join(output, "signal-390-top.png") });
+
+    await signalPage.setViewport({ width: 320, height: 844 });
+    await signalPage.reload({ waitUntil: "domcontentloaded" });
+    await signalPage.waitForFunction(() => document.documentElement.dataset.homeMode === "signal");
+    await signalPage.waitForFunction(() => !document.getAnimations().some(animation => animation.playState === "running" || animation.playState === "pending"));
+    await settle(signalPage);
+    const signalCompact = await signalPage.evaluate(() => ({
+      scrollWidth: document.documentElement.scrollWidth,
+      headerRight: document.querySelector(".header")?.getBoundingClientRect().right,
+      modeSwitchRight: document.querySelector("[data-home-mode-switch]")?.getBoundingClientRect().right,
+    }));
+    assert(signalCompact.scrollWidth <= 320, "Signal compact horizontal overflow");
+    assert(signalCompact.headerRight <= 320 && signalCompact.modeSwitchRight <= 320, "Signal compact header overflow");
+    await signalPage.screenshot({ path: path.join(output, "signal-320.png"), fullPage: true });
+    await signalPage.screenshot({ path: path.join(output, "signal-320-top.png") });
+
+    await signalPage.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+    await signalPage.reload({ waitUntil: "domcontentloaded" });
+    await signalPage.waitForFunction(() => document.querySelector("[data-signal-canvas]")?.width > 0);
+    const staticFrame = await signalPage.$eval("[data-signal-canvas]", canvas => canvas.toDataURL());
+    await signalPage.evaluate(() => new Promise(resolve => {
+      let frames = 0;
+      const next = () => {
+        frames += 1;
+        if (frames >= 30) resolve();
+        else requestAnimationFrame(next);
+      };
+      requestAnimationFrame(next);
+    }));
+    const laterFrame = await signalPage.$eval("[data-signal-canvas]", canvas => canvas.toDataURL());
+    assert.equal(laterFrame, staticFrame, "Reduced-motion signal canvas must remain static");
+    await signalPage.click('[data-home-mode="archive"]');
+    await signalPage.waitForFunction(() => document.documentElement.dataset.homeMode === "archive");
+    report.push({ signalDesktop, signalMobile, signalCompact, signalPersistence: true, signalKeyboard: true, signalReducedMotion: true });
+    await signalPage.close();
+
     const noScript = await browser.newPage();
     await noScript.setJavaScriptEnabled(false);
     await noScript.setViewport({ width: 390, height: 844 });
@@ -152,10 +248,12 @@ async function main() {
     console.log(JSON.stringify({
       routes: routes.length,
       viewports: viewports.length,
-      screenshots: 8,
+      screenshotSets: 11,
       noJavaScript: true,
       reducedMotion: true,
       clientNavigation: true,
+      homeModes: ["archive", "signal"],
+      signalCanvas: true,
     }, null, 2));
   } finally {
     await browser.close();

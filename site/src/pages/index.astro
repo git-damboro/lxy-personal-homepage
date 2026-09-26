@@ -1,5 +1,6 @@
 ---
 import Arrow from "../components/Arrow.astro";
+import SignalHome from "../components/SignalHome.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { capabilityMap, engineeringNotes, experience, featuredProjects, profile } from "../data/profile";
 
@@ -8,7 +9,9 @@ const description = "李兴宇，东华大学计算机专硕，2028 届。四段
 ---
 
 <BaseLayout title={title} description={description} page="home">
-  <section class="band hero-band" id="top" aria-labelledby="intro-title">
+  <div class="home-mode-root" id="top">
+  <div class="archive-home" data-home-surface="archive" aria-hidden="false">
+  <section class="band hero-band" aria-labelledby="intro-title">
     <div class="shell home-hero">
       <div class="hero-copy">
         <p class="eyebrow hero-reveal" style="--order: 0"><span class="status-dot" aria-hidden="true"></span>Backend / Agent Engineering</p>
@@ -135,4 +138,7 @@ const description = "李兴宇，东华大学计算机专硕，2028 届。四段
       </div>
     </div>
   </section>
+  </div>
+  <SignalHome />
+  </div>
 </BaseLayout>

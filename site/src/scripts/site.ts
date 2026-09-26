@@ -1,3 +1,5 @@
+import { initializeHomeMode } from "./signal-home";
+
 let cleanupPage: (() => void) | undefined;
 
 function markCurrent(links: HTMLAnchorElement[], id: string) {
@@ -11,6 +13,7 @@ function initializePage() {
   cleanupPage?.();
 
   const cleanups: Array<() => void> = [];
+  cleanups.push(initializeHomeMode());
   const progress = document.querySelector<HTMLElement>(".reading-progress");
   const caseNavigation = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-case-nav]"));
   const indexedSections = caseNavigation

@@ -27,7 +27,13 @@ const { title, description, page } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" />
-    <script is:inline>document.documentElement.classList.add("js");</script>
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      try {
+        const mode = localStorage.getItem("lxy-home-mode");
+        if (mode === "archive" || mode === "signal") document.documentElement.dataset.homeMode = mode;
+      } catch {}
+    </script>
     <ClientRouter />
     <title>{title}</title>
   </head>

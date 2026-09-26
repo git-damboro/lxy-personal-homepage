@@ -1,8 +1,10 @@
 ---
 import Arrow from "./Arrow.astro";
+import HomeModeSwitch from "./HomeModeSwitch.astro";
 import { profile } from "../data/profile";
 
 const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const isHome = pathname === "/";
 const navigation = [
   { href: "/", label: "首页" },
   { href: "/work", label: "项目" },
@@ -24,6 +26,7 @@ const navigation = [
         </a>
       ))}
     </nav>
+    {isHome && <HomeModeSwitch />}
     <a class="github-link" href={profile.github} target="_blank" rel="noreferrer" aria-label="打开 Lxy 的 GitHub">
       <span>GitHub</span><Arrow diagonal />
     </a>

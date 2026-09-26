@@ -1,0 +1,112 @@
+---
+import Arrow from "./Arrow.astro";
+import { capabilityMap, engineeringNotes, experience, featuredProjects, profile } from "../data/profile";
+---
+
+<div class="signal-home" data-home-surface="signal" aria-hidden="true">
+  <section class="signal-hero" aria-labelledby="signal-title">
+    <canvas class="signal-canvas" data-signal-canvas aria-hidden="true"></canvas>
+    <div class="signal-grid" aria-hidden="true"></div>
+    <div class="shell signal-hero-inner">
+      <div class="signal-identity">
+        <p class="signal-overline"><span></span>LXY / SYSTEM FIELD</p>
+        <h1 id="signal-title">LXY<span>Backend systems.<br />Agent runtime.</span></h1>
+        <p class="signal-intro">把不确定判断放进受控边界，<br />让执行、状态和证据可以被追踪。</p>
+        <div class="signal-actions">
+          <a href="/work">Explore work<Arrow /></a>
+          <a href={`mailto:${profile.email}`}>Contact<Arrow diagonal /></a>
+        </div>
+      </div>
+
+      <div class="signal-console" data-signal-console>
+        <div class="signal-console-head">
+          <span>CAPABILITY ROUTER</span>
+          <span data-signal-state>ACTIVE / C1</span>
+        </div>
+        <div class="signal-node-list" role="group" aria-label="能力节点">
+          {capabilityMap.map((capability, index) => (
+            <button
+              type="button"
+              class:list={["signal-node", { active: index === 0 }]}
+              data-signal-node={index}
+              data-title={capability.name}
+              data-statement={capability.statement}
+              data-evidence={capability.evidence}
+              data-href={capability.href}
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              <span>C{index + 1}</span>
+              <strong>{capability.name}</strong>
+              <i aria-hidden="true"></i>
+            </button>
+          ))}
+        </div>
+        <div class="signal-detail" aria-live="polite">
+          <span>SELECTED NODE</span>
+          <h2 data-signal-detail-title>{capabilityMap[0].name}</h2>
+          <p data-signal-detail-statement>{capabilityMap[0].statement}</p>
+          <a href={capabilityMap[0].href} data-signal-detail-link>
+            <span data-signal-detail-evidence>{capabilityMap[0].evidence}</span><Arrow />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="shell signal-facts">
+      <span><b>04</b> internships</span>
+      <span><b>07</b> cases</span>
+      <span><b>03</b> field notes</span>
+      <span class="signal-companies">{experience.map(item => item.company).join(" / ")}</span>
+    </div>
+  </section>
+
+  <section class="signal-work" aria-labelledby="signal-work-title">
+    <div class="shell signal-section-head" data-reveal>
+      <p>01 / SELECTED WORK</p>
+      <h2 id="signal-work-title">Systems built around<br />real constraints.</h2>
+      <a href="/work">All cases<Arrow /></a>
+    </div>
+    <div class="shell signal-work-list" data-reveal>
+      {featuredProjects.map((project, index) => (
+        <article class="signal-project">
+          <span class="signal-project-number">0{index + 1}</span>
+          <div>
+            <small>{project.kind}</small>
+            <h3>{project.name}</h3>
+          </div>
+          <p>{project.description}</p>
+          <div class="signal-project-links">
+            {project.introductions.map(link => <a href={`/work#${link.target}`}>{link.label}<Arrow /></a>)}
+            {project.source && <a href={project.source} target="_blank" rel="noreferrer">Source<Arrow diagonal /></a>}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="signal-notes" aria-labelledby="signal-notes-title">
+    <div class="shell signal-section-head" data-reveal>
+      <p>02 / FIELD NOTES</p>
+      <h2 id="signal-notes-title">Failures leave a trace.</h2>
+      <a href="/notes">All notes<Arrow /></a>
+    </div>
+    <div class="shell signal-log" data-reveal>
+      {engineeringNotes.map(note => (
+        <a href={`/notes#${note.id}`}>
+          <span>{note.number}</span>
+          <small>{note.category}</small>
+          <h3>{note.title}</h3>
+          <Arrow />
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="signal-contact" aria-labelledby="signal-contact-title">
+    <div class="shell" data-reveal>
+      <p>03 / OPEN CHANNEL</p>
+      <h2 id="signal-contact-title">Build the next reliable system.</h2>
+      <a href={`mailto:${profile.email}`}>{profile.email}<Arrow diagonal /></a>
+    </div>
+  </section>
+</div>
