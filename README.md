@@ -26,7 +26,7 @@ npm run dev
 
 ## Stack
 
-- Astro 5
+- Astro 7
 - TypeScript
 - Static HTML
 - Astro ClientRouter for restrained page transitions
