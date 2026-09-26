@@ -1,0 +1,142 @@
+---
+import Arrow from "./Arrow.astro";
+import { experienceStories, featuredProjects, profile, tokenUsageSources } from "../data/profile";
+
+const verticalLines = Array.from({ length: 8 });
+const horizontalLines = Array.from({ length: 6 });
+const initialSource = tokenUsageSources[0];
+---
+
+<div class="story-home" data-home-surface="story" aria-hidden="true">
+  <section class="story-hero" aria-labelledby="story-title">
+    <div class="story-grid" aria-hidden="true">
+      {verticalLines.map(() => <i class="vertical"></i>)}
+      {horizontalLines.map(() => <i class="horizontal"></i>)}
+    </div>
+    <div class="shell story-hero-inner">
+      <p class="story-status"><span></span>2028 届 · 后端 / Agent 工程</p>
+      <h1 id="story-title"><span>你好，我是</span>{profile.name}<em>{profile.englishName}</em></h1>
+      <p class="story-lead">四段实习让我持续处理执行可靠性、服务边界与产品交付；也让我更在意，技术结论能否被证据验证。</p>
+      <div class="story-actions">
+        <a class="story-primary-action" href="#story-experience">查看实习经历<Arrow diagonal /></a>
+        <a href="/work">完整项目<Arrow diagonal /></a>
+      </div>
+      <div class="story-proof">
+        <div><span>01 / EXPERIENCE</span><strong>四段实习</strong><p>从执行框架到全栈交付</p></div>
+        <div><span>02 / PROJECTS</span><strong>七个案例</strong><p>职责、机制与公开边界</p></div>
+        <div><span>03 / NOTES</span><strong>工程复盘</strong><p>根因、取舍与验证证据</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="token-ledger" aria-labelledby="token-title">
+    <div class="shell token-ledger-inner">
+      <header>
+        <p>AI USAGE / SOURCE-AWARE</p>
+        <h2 id="token-title">Lxy's Token Workspace</h2>
+        <span>不同来源保留各自统计口径，不生成误导性的合并总数。</span>
+      </header>
+
+      <div class="token-source-switch" role="group" aria-label="Token 数据来源">
+        {tokenUsageSources.map((source, index) => (
+          <button
+            type="button"
+            class:list={{ active: index === 0 }}
+            data-token-source={source.id}
+            data-name={source.name}
+            data-unit={source.unit}
+            data-visibility={source.visibility}
+            data-status={source.status}
+            data-description={source.description}
+            aria-pressed={index === 0 ? "true" : "false"}
+          >{source.name}</button>
+        ))}
+      </div>
+
+      <div class="token-visual">
+        <div class="token-axis" aria-hidden="true">
+          {["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"].map(label => <span>{label}</span>)}
+        </div>
+        <div class="token-track" aria-hidden="true">
+          {Array.from({ length: 24 }).map((_, index) => <i style={`--cell: ${index}`}></i>)}
+        </div>
+        <div class="token-empty">
+          <span data-token-unit>{initialSource.unit}</span>
+          <strong data-token-status>{initialSource.status}</strong>
+          <p data-token-description>{initialSource.description}</p>
+        </div>
+      </div>
+
+      <dl class="token-summary">
+        <div><dt>Sources</dt><dd>3</dd></div>
+        <div><dt>Accounting</dt><dd>Separated</dd></div>
+        <div><dt>Public total</dt><dd>Not merged</dd></div>
+        <div><dt>Selected</dt><dd data-token-selected>{initialSource.name}</dd></div>
+        <div><dt>Visibility</dt><dd data-token-visibility>{initialSource.visibility}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="story-experience" id="story-experience" aria-labelledby="story-experience-title">
+    <div class="shell story-section-heading">
+      <p>02 · EXPERIENCE / 实习经历</p>
+      <h2 id="story-experience-title">实习经历</h2>
+      <span>不展示时间，只保留职责、问题与交付。</span>
+    </div>
+
+    <div class="shell story-timeline">
+      {experienceStories.map(item => (
+        <article class="story-experience-item">
+          <a class="story-timeline-marker" href={item.href} aria-label={`查看 ${item.company} 项目`}>
+            <span>{item.number}</span><i></i>
+          </a>
+          <div class="story-experience-main">
+            <p>{item.number} / INTERNSHIP</p>
+            <h3>{item.company}</h3>
+            <h4>{item.role}</h4>
+            <ul>{item.tags.map(tag => <li>{tag}</li>)}</ul>
+            <div class="story-experience-panels">
+              <section>
+                <span>MY SCOPE / 我负责</span>
+                <p>{item.scope}</p>
+              </section>
+              <section>
+                <span>DELIVERY / 关键交付</span>
+                <p>{item.delivery}</p>
+              </section>
+            </div>
+            <a class="story-case-link" href={item.href}>打开项目详情<Arrow diagonal /></a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="story-projects" aria-labelledby="story-projects-title">
+    <div class="shell story-section-heading compact">
+      <p>03 · SELECTED PROJECTS</p>
+      <h2 id="story-projects-title">把实践继续做成作品。</h2>
+    </div>
+    <div class="shell story-project-list">
+      {featuredProjects.map((project, index) => (
+        <article>
+          <span>0{index + 1}</span>
+          <div><small>{project.kind}</small><h3>{project.name}</h3></div>
+          <p>{project.description}</p>
+          <a href={`/work#${project.introductions[0].target}`}>查看<Arrow /></a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="story-contact" aria-labelledby="story-contact-title">
+    <div class="shell">
+      <p>LET'S TALK / 期待交流</p>
+      <h2 id="story-contact-title">后端、Agent 工程，<br />以及值得认真解决的问题。</h2>
+      <div>
+        <a href={`mailto:${profile.email}`}>{profile.email}<Arrow diagonal /></a>
+        <a href={profile.github} target="_blank" rel="noreferrer">GitHub / git-damboro<Arrow diagonal /></a>
+      </div>
+    </div>
+  </section>
+</div>

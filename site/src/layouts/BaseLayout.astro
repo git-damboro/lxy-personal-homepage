@@ -31,7 +31,7 @@ const { title, description, page } = Astro.props;
       document.documentElement.classList.add("js");
       try {
         const mode = localStorage.getItem("lxy-home-mode");
-        if (mode === "archive" || mode === "signal") document.documentElement.dataset.homeMode = mode;
+        if (mode === "archive" || mode === "story") document.documentElement.dataset.homeMode = mode;
       } catch {}
     </script>
     <ClientRouter />

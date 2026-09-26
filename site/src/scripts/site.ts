@@ -1,4 +1,4 @@
-import { initializeHomeMode } from "./signal-home";
+import { initializeHomeMode } from "./story-home";
 
 let cleanupPage: (() => void) | undefined;
 

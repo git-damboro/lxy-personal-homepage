@@ -273,3 +273,69 @@ export const capabilityMap = [
     href: "/work#onekos",
   },
 ] as const;
+
+export const experienceStories = [
+  {
+    number: "01",
+    company: "字节跳动",
+    role: "AI Agent / 后端开发",
+    tags: ["Agent Harness", "跨仓分析", "自动化", "平台工程"],
+    scope: "参与 CodeS 执行框架与 MoniFlow 平台建设，覆盖代码变更分析、任务执行、结果归档和自动化回放。",
+    delivery: "把执行端、任务数据和前端观察面连接成完整链路；公司代码、内部系统入口和原始数据不公开。",
+    href: "/work#codes",
+  },
+  {
+    number: "02",
+    company: "蔚来",
+    role: "Web 全栈开发",
+    tags: ["Kubernetes", "Scheduler", "HTTP", "服务鉴权"],
+    scope: "参与 BI 平台开发，定位多副本部署时重复注册定时任务的问题，并重新划分调度与业务执行职责。",
+    delivery: "落地独立调度服务、动态配置同步和服务间鉴权，保留业务服务水平扩容能力。",
+    href: "/work#nio",
+  },
+  {
+    number: "03",
+    company: "上海蕴万",
+    role: "AI 全栈开发",
+    tags: ["Windows / macOS", "i18n", "配置分发", "部署联调"],
+    scope: "参与跨平台工时客户端与云端配置能力，处理多语言、配置来源、加密分发和客户端兼容。",
+    delivery: "连接 Ubuntu 服务、云端缓存、Nginx 与 WireGuard，完成客户端到服务端的交付链路。",
+    href: "/work#yunwan",
+  },
+  {
+    number: "04",
+    company: "上海艺栢",
+    role: "全栈开发",
+    tags: ["Java", "Vue 3", "SSR", "SEO"],
+    scope: "参与 iCreat AI 的服务端和前端开发，连接飞书业务数据同步、服务端渲染与多语言页面。",
+    delivery: "完成数据同步与 SSR 运行差异处理，并把页面内容、预取方式和搜索可见性一起落地。",
+    href: "/work#yibo",
+  },
+] as const;
+
+export const tokenUsageSources = [
+  {
+    id: "deepseek",
+    name: "DeepSeek API",
+    unit: "API TOKENS",
+    visibility: "可公开聚合",
+    status: "等待用量导入",
+    description: "按输入、输出、缓存命中与费用记录；接入后可形成按日和按周趋势。",
+  },
+  {
+    id: "codex",
+    name: "Codex Plus",
+    unit: "QUOTA WINDOWS",
+    visibility: "个人订阅口径",
+    status: "等待本地快照",
+    description: "订阅额度不是标准 API Token，单独记录额度窗口、会话与活跃时间，不换算成 Token。",
+  },
+  {
+    id: "bytedance",
+    name: "ByteDance",
+    unit: "PRIVATE ACTIVITY",
+    visibility: "仅脱敏趋势",
+    status: "不公开绝对值",
+    description: "内部使用量与个人账户隔离，只展示经确认可公开的归一化趋势，不进入个人总量。",
+  },
+] as const;

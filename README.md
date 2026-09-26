@@ -4,7 +4,7 @@
 
 网站以招聘者快速阅读为主线：
 
-- Home：可在“档案 / 信号”两种模式间切换；档案模式快速阅读履历，信号模式通过交互式系统拓扑浏览能力与证据。
+- Home：可在“档案 / 叙事”两种模式间切换；档案模式快速阅读履历，叙事模式展开 Token 来源与实习经历。
 - Work：7 个项目案例，区分职责、关键实现与公开边界。
 - Notes：长任务终态、执行回放和多副本调度的脱敏复盘。
 - About：工程方法、公开范围与联系方式。
@@ -30,7 +30,7 @@ npm run dev
 - TypeScript
 - Static HTML
 - Astro ClientRouter for restrained page transitions
-- Canvas 2D capability topology with keyboard and reduced-motion support
+- Source-aware token usage workspace with keyboard controls
 - Progressive enhancement for mode persistence, section reveal, reading progress, copy and print actions
 
 关闭 JavaScript 后，全部页面内容、导航和锚点仍可正常阅读。
