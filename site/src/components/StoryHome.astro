@@ -30,14 +30,18 @@ const initialSource = tokenUsageSources[0];
   </section>
 
   <section class="token-ledger" aria-labelledby="token-title">
+    <div class="story-grid token-grid-lines" aria-hidden="true">
+      {verticalLines.map(() => <i class="vertical"></i>)}
+      {horizontalLines.map(() => <i class="horizontal"></i>)}
+    </div>
     <div class="shell token-ledger-inner">
-      <header>
-        <p>AI USAGE / SOURCE-AWARE</p>
-        <h2 id="token-title">Lxy's Token Workspace</h2>
+      <header class="story-section-heading token-ledger-heading" data-reveal>
+        <p>01 · AI USAGE / 使用记录</p>
+        <div><small>LXY'S TOKEN WORKSPACE</small><h2 id="token-title">AI 使用记录</h2></div>
         <span>不同来源保留各自统计口径，不生成误导性的合并总数。</span>
       </header>
 
-      <div class="token-source-switch" role="group" aria-label="Token 数据来源">
+      <div class="token-source-switch" role="group" aria-label="Token 数据来源" data-reveal>
         {tokenUsageSources.map((source, index) => (
           <button
             type="button"
@@ -49,16 +53,19 @@ const initialSource = tokenUsageSources[0];
             data-status={source.status}
             data-description={source.description}
             aria-pressed={index === 0 ? "true" : "false"}
-          >{source.name}</button>
+          ><span>0{index + 1}</span><strong>{source.name}</strong><small>{source.unit}</small></button>
         ))}
       </div>
 
-      <div class="token-visual">
-        <div class="token-axis" aria-hidden="true">
-          {["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"].map(label => <span>{label}</span>)}
-        </div>
-        <div class="token-track" aria-hidden="true">
-          {Array.from({ length: 24 }).map((_, index) => <i style={`--cell: ${index}`}></i>)}
+      <div class="token-panels" data-reveal>
+        <div class="token-visual">
+          <span class="token-plot-label">PUBLIC SERIES / NOT CONNECTED</span>
+          <div class="token-axis" aria-hidden="true">
+            {["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"].map(label => <span>{label}</span>)}
+          </div>
+          <div class="token-track" aria-hidden="true">
+            {Array.from({ length: 24 }).map((_, index) => <i style={`--cell: ${index}`}></i>)}
+          </div>
         </div>
         <div class="token-empty">
           <span data-token-unit>{initialSource.unit}</span>
@@ -67,7 +74,7 @@ const initialSource = tokenUsageSources[0];
         </div>
       </div>
 
-      <dl class="token-summary">
+      <dl class="token-summary" data-reveal>
         <div><dt>Sources</dt><dd>3</dd></div>
         <div><dt>Accounting</dt><dd>Separated</dd></div>
         <div><dt>Public total</dt><dd>Not merged</dd></div>
