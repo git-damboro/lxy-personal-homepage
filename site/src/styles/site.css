@@ -1013,10 +1013,11 @@ a:hover span > .arrow { transform: translateX(3px); }
 .story-hero h1 em {
   margin-top: 12px;
   color: #2e6fd0;
-  font-family: var(--display);
-  font-size: 42px;
-  font-weight: 400;
-  font-style: italic;
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1.65;
 }
 
 .story-lead {
@@ -1752,7 +1753,7 @@ a:hover span > .arrow { transform: translateX(3px); }
   .story-status { padding: 8px 11px; font-size: 8px; }
   .story-hero h1 { margin-top: 22px; font-size: 58px; }
   .story-hero h1 > span { font-size: 20px; }
-  .story-hero h1 em { margin-top: 8px; font-size: 33px; }
+  .story-hero h1 em { margin-top: 8px; font-size: 15px; }
   .story-lead { margin-top: 22px; font-size: 14px; }
   .story-actions { gap: 10px; margin-top: 20px; }
   .story-actions a { min-height: 46px; padding-inline: 14px; font-size: 10px; }
